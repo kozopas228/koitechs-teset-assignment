@@ -16,7 +16,8 @@ const RepositoryItem = ({ name, url, lastUpdate }: IProps) => {
                     <a
                         href={url}
                         target={'_blank'}
-                        rel='noreferrer'>
+                        rel='noreferrer'
+                        className={'text-break'}>
                         {name}
                     </a>
                 </h2>

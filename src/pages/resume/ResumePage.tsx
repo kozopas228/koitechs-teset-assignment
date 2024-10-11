@@ -79,12 +79,12 @@ const ResumePage = () => {
                         </div>
                     </div>
                     <div className='row mt-1'>
-                        <div className='col-2'>
+                        <div className='col-lg-2 col-6'>
                             <p>
                                 Public Repositories: <b>{user.public_repos}</b>
                             </p>
                         </div>
-                        <div className='col-3'>
+                        <div className='col-lg-3 col-6'>
                             <p>
                                 Member Since:{' '}
                                 <b>
