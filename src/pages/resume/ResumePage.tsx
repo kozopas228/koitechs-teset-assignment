@@ -25,6 +25,11 @@ const ResumePage = () => {
             const user = await getUser(username!);
             setUser(user);
 
+            if (!user) {
+                setIsLoading(false);
+                return;
+            }
+
             const repos = await getUserRepos(username!);
             repos.sort((r1, r2) => {
                 return (
