@@ -21,7 +21,7 @@
     "sourceMap": true,
     "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "nodenext",
+//    "moduleResolution": "nodenext",
     "baseUrl": ".",
 //    "paths": { // uncomment if there is no npm packages starting with "@"
 //      "@/*": ["./src/*"]

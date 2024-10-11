@@ -10,6 +10,16 @@ import { store } from './store/store';
 import HomePage from './pages/home/HomePage';
 import { ErrorBoundary } from 'react-error-boundary';
 import ResumePage from './pages/resume/ResumePage';
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend,
+    plugins,
+    ChartOptions,
+} from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const router = createBrowserRouter([
     {
