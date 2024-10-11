@@ -7,7 +7,6 @@
     "test": "jest",
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
-  "type": "module",
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",
