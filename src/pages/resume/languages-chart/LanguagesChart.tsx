@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
+import { TopLanguages } from '../../../types/programming-laguages';
 
 const chartOptions: ChartOptions<any> = {
     plugins: {
@@ -10,24 +11,28 @@ const chartOptions: ChartOptions<any> = {
     },
 };
 
-const languagesData = {
-    labels: ['JavaScript', 'Python', 'Java', 'C++', 'Ruby'],
-    datasets: [
-        {
-            label: 'Use of languages',
-            data: [30, 25, 20, 15, 10],
-            backgroundColor: [
-                '#ff6384',
-                '#36a2eb',
-                '#ffce56',
-                '#4bc0c0',
-                '#9966ff',
-            ],
-        },
-    ],
-};
+interface IProps {
+    topLanguages: TopLanguages[];
+}
 
-const LanguagesChart = () => {
+const LanguagesChart = ({ topLanguages }: IProps) => {
+    const languagesData = {
+        labels: topLanguages.map((l) => l.language),
+        datasets: [
+            {
+                label: 'Bytes used per language',
+                data: topLanguages.map((l) => l.count),
+                backgroundColor: [
+                    '#ff6384',
+                    '#36a2eb',
+                    '#ffce56',
+                    '#4bc0c0',
+                    '#9966ff',
+                ],
+            },
+        ],
+    };
+
     return (
         <Pie
             data={languagesData}

@@ -3,12 +3,21 @@ import styles from './ResumePage.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import LanguagesChart from './languages-chart/LanguagesChart';
 import RepositoryItem from './repository-item/RepositoryItem';
+import { GitHubUser } from '../../types/github-user';
+import { Repository } from '../../types/respository';
+import { TopLanguages } from '../../types/programming-laguages';
+import { getUser } from '../../services/users';
+import { getUserRepos } from '../../services/repositories';
+import { countLanguages, getTopLanguages } from '../../services/languages';
 
 const ResumePage = () => {
     const { username } = useParams();
 
-    const [isUserFound, setIsUserFound] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState<GitHubUser | null>(null);
+    const [repos, setRepos] = useState<Repository[]>([]);
+    const [topLanguages, setTopLanguages] = useState<TopLanguages[]>([]);
+
     const [realName, setRealName] = useState('John Doe');
     const [publicReposCount, setPublicReposCount] = useState(7);
     const [memberSinceDate, setMemberSinceDate] = useState(
@@ -16,16 +25,26 @@ const ResumePage = () => {
     );
 
     useEffect(() => {
-        setIsLoading(true);
+        (async function () {
+            await setIsLoading(true);
 
-        // fetch user
-        if (username !== 'testnotfound') {
-            setIsUserFound(true);
-        }
+            const user = await getUser(username!);
+            setUser(user);
 
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
+            const repos = await getUserRepos(username!);
+            setRepos(repos);
+
+            const allLanguagesCount = await countLanguages(username!, repos);
+
+            const top5Languages = getTopLanguages(allLanguagesCount);
+            setTopLanguages(top5Languages);
+
+            console.log(top5Languages);
+
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
+        })();
     }, [username]);
 
     return (
@@ -38,7 +57,7 @@ const ResumePage = () => {
                             role='status'></div>
                     </div>
                 </div>
-            ) : !isUserFound ? (
+            ) : !user ? (
                 <div className={'p-3 mt-4'}>
                     <div className='text-center'>
                         <h4>User was not found.</h4>
@@ -54,21 +73,27 @@ const ResumePage = () => {
                     <div className='row'>
                         <div className='col-12 mt-3'>
                             <h5 className={'text-secondary'}>
-                                AKA <b>{realName}</b>
+                                AKA <b>{user.name}</b>
                             </h5>
                         </div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-2'>
                             <p>
-                                Public Repositories: <b>{publicReposCount}</b>
+                                Public Repositories: <b>{user.public_repos}</b>
                             </p>
                         </div>
                         <div className='col-3'>
                             <p>
                                 Member Since:{' '}
                                 <b>
-                                    {memberSinceDate.toLocaleDateString('eu')}
+                                    {new Date(
+                                        user.created_at
+                                    ).toLocaleDateString('en-eu', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric',
+                                    })}
                                 </b>
                             </p>
                         </div>
@@ -76,7 +101,7 @@ const ResumePage = () => {
                     <div className='row mt-3'>
                         <div className='col-lg-4 col-8'>
                             <span>Use of languages (maximum of 5):</span>
-                            <LanguagesChart />
+                            <LanguagesChart topLanguages={topLanguages} />
                         </div>
                     </div>
                     <div className='row mt-4'>
