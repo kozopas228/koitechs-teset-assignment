@@ -5,7 +5,7 @@ import './index.css';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import NotFoundPage from './pages/not-found/NotFoundPage';
+import ErrorPage from './pages/error/ErrorPage';
 import { store } from './store/store';
 import HomePage from './pages/home/HomePage';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
                 element: <ResumePage />,
             },
         ],
-        errorElement: <NotFoundPage />,
+        errorElement: <ErrorPage />,
     },
 ]);
 
