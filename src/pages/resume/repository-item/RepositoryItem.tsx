@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './RepositoryItem.module.css';
 
 interface IProps {
     name: string;
@@ -9,8 +10,7 @@ interface IProps {
 const RepositoryItem = ({ name, url, lastUpdate }: IProps) => {
     return (
         <div
-            className='border-bottom border-2 mb-5'
-            key={url}>
+            className={`border-bottom border-2 mb-5 ${styles.repository_item}`}>
             <div className='row'>
                 <h2 className='col-12'>
                     <a
@@ -23,7 +23,12 @@ const RepositoryItem = ({ name, url, lastUpdate }: IProps) => {
             </div>
             <div className='row'>
                 <p className='col-12 text-secondary'>
-                    Last Update: {lastUpdate.toLocaleDateString('en-us')}
+                    Last Update:{' '}
+                    {lastUpdate.toLocaleDateString('en-eu', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}
                 </p>
             </div>
         </div>

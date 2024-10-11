@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './ResumePage.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LanguagesChart from './languages-chart/LanguagesChart';
 import RepositoryItem from './repository-item/RepositoryItem';
 import { GitHubUser } from '../../types/github-user';
@@ -9,6 +8,7 @@ import { TopLanguages } from '../../types/programming-laguages';
 import { getUser } from '../../services/users';
 import { getUserRepos } from '../../services/repositories';
 import { countLanguages, getTopLanguages } from '../../services/languages';
+import { MAX_REPOS_COUNT } from '../../utils/constants';
 
 const ResumePage = () => {
     const { username } = useParams();
@@ -18,12 +18,6 @@ const ResumePage = () => {
     const [repos, setRepos] = useState<Repository[]>([]);
     const [topLanguages, setTopLanguages] = useState<TopLanguages[]>([]);
 
-    const [realName, setRealName] = useState('John Doe');
-    const [publicReposCount, setPublicReposCount] = useState(7);
-    const [memberSinceDate, setMemberSinceDate] = useState(
-        new Date(2020, 7, 21)
-    );
-
     useEffect(() => {
         (async function () {
             await setIsLoading(true);
@@ -32,6 +26,12 @@ const ResumePage = () => {
             setUser(user);
 
             const repos = await getUserRepos(username!);
+            repos.sort((r1, r2) => {
+                return (
+                    new Date(r2.pushed_at).getTime() -
+                    new Date(r1.pushed_at).getTime()
+                );
+            });
             setRepos(repos);
 
             const allLanguagesCount = await countLanguages(username!, repos);
@@ -39,11 +39,7 @@ const ResumePage = () => {
             const top5Languages = getTopLanguages(allLanguagesCount);
             setTopLanguages(top5Languages);
 
-            console.log(top5Languages);
-
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1000);
+            setIsLoading(false);
         })();
     }, [username]);
 
@@ -64,7 +60,7 @@ const ResumePage = () => {
                     </div>
                 </div>
             ) : (
-                <div className={'border border-secondary rounded p-3 mt-4'}>
+                <div className={'border border-secondary rounded p-3 m-4'}>
                     <div className='row'>
                         <div className='col-12'>
                             <h1>{username}</h1>
@@ -109,11 +105,14 @@ const ResumePage = () => {
                             Most Recent Public Repositories (maximum of 10):
                         </p>
                     </div>
-                    <RepositoryItem
-                        name={'Repository 1'}
-                        url={''}
-                        lastUpdate={new Date()}
-                    />
+                    {repos.slice(0, MAX_REPOS_COUNT).map((r) => (
+                        <RepositoryItem
+                            key={r.id}
+                            name={r.name}
+                            url={r.html_url}
+                            lastUpdate={new Date(r.pushed_at)}
+                        />
+                    ))}
                 </div>
             )}
         </div>

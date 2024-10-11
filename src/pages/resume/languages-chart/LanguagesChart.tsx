@@ -20,7 +20,7 @@ const LanguagesChart = ({ topLanguages }: IProps) => {
         labels: topLanguages.map((l) => l.language),
         datasets: [
             {
-                label: 'Bytes used per language',
+                label: 'Bytes used',
                 data: topLanguages.map((l) => l.count),
                 backgroundColor: [
                     '#ff6384',

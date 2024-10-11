@@ -5,6 +5,7 @@ import {
 import { Repository } from '../types/respository';
 import { Octokit } from '@octokit/core';
 import * as process from 'process';
+import { MAX_LANGUAGES_COUNT } from "../utils/constants";
 const octokit = new Octokit({
     auth: process.env.API_TOKEN,
 });
@@ -56,7 +57,7 @@ export async function countLanguages(
 
 export function getTopLanguages(
     languageCount: ProgrammingLanguages,
-    topN: number = 5
+    topN: number = MAX_LANGUAGES_COUNT
 ): TopLanguages[] {
     return Object.entries(languageCount)
         .sort(([, countA], [, countB]) => countB - countA)
