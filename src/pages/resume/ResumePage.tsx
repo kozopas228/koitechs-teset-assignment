@@ -71,13 +71,15 @@ const ResumePage = () => {
                             <h1>{username}</h1>
                         </div>
                     </div>
-                    <div className='row'>
-                        <div className='col-12 mt-3'>
-                            <h5 className={'text-secondary'}>
-                                AKA <b>{user.name}</b>
-                            </h5>
+                    {user.name && (
+                        <div className='row'>
+                            <div className='col-12 mt-3'>
+                                <h5 className={'text-secondary'}>
+                                    AKA <b>{user.name}</b>
+                                </h5>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     <div className='row mt-1'>
                         <div className='col-lg-2 col-6'>
                             <p>
@@ -100,7 +102,7 @@ const ResumePage = () => {
                         </div>
                     </div>
                     <div className='row mt-3'>
-                        <div className='col-lg-4 col-8'>
+                        <div className='col-lg-4 col'>
                             <span>Use of languages (maximum of 5):</span>
                             <LanguagesChart topLanguages={topLanguages} />
                         </div>
