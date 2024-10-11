@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ResumePage.module.css';
+import { useParams } from 'react-router-dom';
 
 const ResumePage = () => {
-    return <div>Resume</div>;
+
 };
 
 export default ResumePage;
